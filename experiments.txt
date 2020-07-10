@@ -1,0 +1,97 @@
+Experiments
+---------------------------------------
+
+1) FashionMNIST standard classificaton 
+    
+    paper: 
+
+        arch: 3 conv layers with 64, 128, 128 channels and 3x3 filters 
+        followed by a fully connected layer. 
+        
+        optim: SGD with initial learning rate of 0.05, decayed by .2 every
+        10 epochs. momentum = 0.9. weight decay = 10^-4
+        
+        preprocessing: normalize with channel mean & std
+
+        data: validation set is 5000 images sampled at random from the 
+        60000 images in the training set.
+
+        training: 30 epochs, batch size unspecified.
+
+        results: 0.924 +- 0.001 
+
+    reproduced:
+        
+        arch: same as paper
+        optim: same as paper
+        preprocessing: same as paper
+
+        data: training set is 60000 images from fashionMNIST training set, 
+        test set is 10000 images from fashionMNIST test set
+
+        training: same as paper, batch size = 100
+
+        results: 0.923 
+        
+        notebook: FM_classification.ipynb
+
+
+2) FashionMNIST classifcation with DUQ model
+
+    paper:
+        
+        arch: same as 1) 
+        optim: same as 1) 
+        preprocessing: same as 1) 
+        data: same as 1) 
+        training: same as 1)
+
+        DUQ parameters: length scale (sigma) = 0.1, 
+        gradient penalty (lambda) = 0.05, Lipschitz constant not specified,
+        found in source code to be 1.
+
+        results: lambda =   0: .924 +- 0.02
+                 lambda = .05: .924 +- 0.02
+
+    reproduced:
+        
+        arch: same as paper
+        optim: same as paper
+        preprocessing: same as paper
+        data: same as 1
+        training: same as paper
+        DUQ parameters: same as paper
+
+        results: lambda =   0: .926 
+                 lambda = .05: .924
+
+        notebook: FM_DUQ_classification
+
+3) FashionMNIST OOD detection on MNIST 
+
+    paper:
+        arch: same as 2)
+        optim: same as 2)
+        preprocessing: same as 2)
+        data: same as 2)
+        training: same as 2)
+
+        DUQ paramenters: same as 2)
+        gradient penalty (lambda) = 0.05
+
+        results: AUROC .955 +- 0.007
+
+    reproduced: 
+        arch: same as paper
+        optim: same as paper
+        preprocessing: same as paper
+        data: same as 1
+        training: same as paper
+
+        DUQ parameters: same as paper
+        gradient penalty (lambda) = 0.05
+
+        results: .972
+
+        notebook: FM_ood_detection
+
